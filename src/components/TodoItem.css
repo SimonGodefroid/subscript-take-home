@@ -1,0 +1,16 @@
+.todo-item {
+  display: flex;
+  gap: 2em;
+  align-items: center;
+}
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 2em;
+  padding: 2em;
+}

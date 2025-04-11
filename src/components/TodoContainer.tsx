@@ -52,6 +52,17 @@ export function TodoContainer() {
     setTodos([...todos, newTodo]);
   };
 
+  const addCommentToTodoItem = (id: string, comment: string) => {
+    setTodos(
+      todos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, comment };
+        }
+        return todo;
+      })
+    );
+  };
+
   return (
     <div className="container">
       <Header />
@@ -60,6 +71,7 @@ export function TodoContainer() {
         todos={todos}
         handleChangeProps={handleChange}
         deleteTodoProps={deleteTodo}
+        addCommentToTodoItemProps={addCommentToTodoItem}
       />
     </div>
   );
