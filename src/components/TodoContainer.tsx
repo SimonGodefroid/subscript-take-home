@@ -1,78 +1,17 @@
 import { TodosList } from './TodosList';
 import { Header } from './Header';
 import { InputTodo } from './InputTodo';
-import { v4 as uuidv4 } from 'uuid';
-import { useState } from 'react';
+import { useContext } from 'react';
+import { TodosContext } from '../contexts';
 
 export function TodoContainer() {
-  const [todos, setTodos] = useState([
-    {
-      id: uuidv4(),
-      title: 'Setup development environment',
-      completed: true,
-    },
-    {
-      id: uuidv4(),
-      title: 'Develop website and add content',
-      completed: false,
-    },
-    {
-      id: uuidv4(),
-      title: 'Deploy to live server',
-      completed: false,
-    },
-  ]);
-
-  const handleChange = (id: string) => {
-    setTodos(
-      todos.map((todo) => {
-        if (todo.id === id) {
-          todo.completed = !todo.completed;
-        }
-        return todo;
-      })
-    );
-  };
-
-  const deleteTodo = (id: string) => {
-    setTodos([
-      ...todos.filter((todo) => {
-        return todo.id !== id;
-      }),
-    ]);
-  };
-
-  const addTodoItem = (title: string) => {
-    const newTodo = {
-      // id: uuid.v4(),
-      id: uuidv4(),
-      title: title,
-      completed: false,
-    };
-    setTodos([...todos, newTodo]);
-  };
-
-  const addCommentToTodoItem = (id: string, comment: string) => {
-    setTodos(
-      todos.map((todo) => {
-        if (todo.id === id) {
-          return { ...todo, comment };
-        }
-        return todo;
-      })
-    );
-  };
+  const todos = useContext(TodosContext);
 
   return (
     <div className="container">
       <Header />
-      <InputTodo addTodoProps={addTodoItem} />
-      <TodosList
-        todos={todos}
-        handleChangeProps={handleChange}
-        deleteTodoProps={deleteTodo}
-        addCommentToTodoItemProps={addCommentToTodoItem}
-      />
+      <InputTodo />
+      <TodosList todos={todos} />
     </div>
   );
 }

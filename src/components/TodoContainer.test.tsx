@@ -2,10 +2,15 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { TodoContainer } from './TodoContainer';
+import { TestWrapper } from '../wrappers/TestWrapper';
 
 describe(TodoContainer.name, () => {
   it('renders a list of todo items', () => {
-    render(<TodoContainer />);
+    render(
+      <TestWrapper>
+        <TodoContainer />
+      </TestWrapper>
+    );
 
     const listItems = screen.getAllByRole('listitem');
     expect(listItems).toHaveLength(3);
@@ -15,7 +20,11 @@ describe(TodoContainer.name, () => {
     expect(within(listItems[0]).getByRole('button', { name: /add comment/i }));
   });
   it('deletes a todo item', async () => {
-    render(<TodoContainer />);
+    render(
+      <TestWrapper>
+        <TodoContainer />
+      </TestWrapper>
+    );
     const listItems = screen.getAllByRole('listitem');
     expect(within(listItems[0]).getByText(/Setup development environment/i));
     await userEvent.click(
@@ -28,7 +37,11 @@ describe(TodoContainer.name, () => {
     );
   });
   it('adds a comment on a todo item', async () => {
-    render(<TodoContainer />);
+    render(
+      <TestWrapper>
+        <TodoContainer />
+      </TestWrapper>
+    );
     const listItems = screen.getAllByRole('listitem');
     expect(within(listItems[0]).getByText(/Setup development environment/i));
     await userEvent.click(

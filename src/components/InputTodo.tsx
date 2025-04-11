@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { TodosAction } from '../reducers';
+import { TodosDispatchContext } from '../contexts';
 
-export function InputTodo({
-  addTodoProps,
-}: {
-  addTodoProps: (title: string) => void;
-}) {
+export function InputTodo() {
+  const dispatch = useContext(TodosDispatchContext);
+
   const [title, setTitle] = useState('');
 
   const onChange = (e: React.BaseSyntheticEvent) => {
@@ -13,7 +13,11 @@ export function InputTodo({
 
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    addTodoProps(title);
+    dispatch &&
+      dispatch({
+        type: TodosAction.add,
+        title,
+      });
     setTitle('');
   };
   return (

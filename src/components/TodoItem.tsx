@@ -1,17 +1,10 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Todo } from '../types';
 import './TodoItem.css';
-export function TodoItem({
-  todo,
-  handleChangeProps,
-  deleteTodoProps,
-  addCommentToTodoItemProps,
-}: {
-  todo: Todo;
-  handleChangeProps: (id: string) => void;
-  deleteTodoProps: (id: string) => void;
-  addCommentToTodoItemProps: (id: string, comment: string) => void;
-}) {
+import { TodosAction } from '../reducers';
+import { TodosDispatchContext } from '../contexts';
+export function TodoItem({ todo }: { todo: Todo }) {
+  const dispatch = useContext(TodosDispatchContext);
   const completedStyle = {
     fontStyle: 'italic',
     color: '#d35e0f',
@@ -34,16 +27,37 @@ export function TodoItem({
   const handleSubmitComment = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     handleShowCommentForm();
-    addCommentToTodoItemProps(id, commentText);
+    dispatch &&
+      dispatch({
+        type: TodosAction.comment,
+        id,
+        comment: commentText,
+      });
   };
   return (
     <li className="todo-item">
       <input
         type="checkbox"
         checked={completed}
-        onChange={() => handleChangeProps(id)}
+        onChange={() => {
+          dispatch &&
+            dispatch({
+              type: TodosAction.complete,
+              id,
+            });
+        }}
       />
-      <button onClick={() => deleteTodoProps(id)}>Delete</button>
+      <button
+        onClick={() => {
+          dispatch &&
+            dispatch({
+              type: TodosAction.delete,
+              id,
+            });
+        }}
+      >
+        Delete
+      </button>
       <span style={completed ? completedStyle : undefined}>{title}</span>
       {!showCommentForm && (
         <button onClick={handleShowCommentForm}>Add Comment</button>
